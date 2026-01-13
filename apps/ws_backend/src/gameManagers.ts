@@ -9,7 +9,7 @@ export class GameManager{
     constructor(){
         this.waitingplayer=null
         this.Games=[]
-        this.Users=[] // probably isnt right idky why it should be empty
+        this.Users=[] 
     }
     public addUser(socket:WebSocket){
         this.Users.push(socket)
@@ -30,6 +30,7 @@ export class GameManager{
             if(message.type==INIT_GAME){
                 console.log(this.waitingplayer)
                 if(this.waitingplayer){
+                    //Should have a check for ratings. We'll come to it when we come to it
                     const newgame= new Game(socket,this.waitingplayer)
                     this.Games.push(newgame)
                     socket.send("game started")
@@ -40,9 +41,6 @@ export class GameManager{
                     socket.send("Waiting...")
                 }
                 
-            }
-            if(message.type==MOVE){
-                // logic to move
             }
         })
         
