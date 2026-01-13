@@ -1,9 +1,13 @@
 import { WebSocketServer } from "ws";
+import { GameManager } from "./gameManagers";
 const wss = new WebSocketServer({port:8080});
+const manager = new GameManager();
+
 wss.on("connection",(ws)=>{
-    ws.send("ws connected on port 8080")
-    ws.on("message",()=>{
-        console.log("message sent")
-        ws.send("message sent")
+    console.log("ws connected on port 8080")
+    manager.addUser(ws);
+    manager.addHandler(ws);
+    ws.on("close",()=>{
+        manager.removeUser(ws)
     })
 })
