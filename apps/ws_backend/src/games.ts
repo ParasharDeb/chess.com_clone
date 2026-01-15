@@ -1,5 +1,5 @@
 import { WebSocket } from "ws";
-import { INIT_GAME } from "./constants";
+import { INIT_GAME } from "./constants.js";
 import { Chess } from "chess.js";
 export class Game{
     public player1:WebSocket

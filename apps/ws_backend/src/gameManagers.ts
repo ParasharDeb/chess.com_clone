@@ -1,6 +1,6 @@
 import WebSocket from "ws"
-import { Game } from "./games"
-import { INIT_GAME, MOVE } from "./constants"
+import { Game } from "./games.js"
+import { INIT_GAME, MOVE } from "./constants.js"
 
 export class GameManager{
     private waitingplayer:WebSocket|null
