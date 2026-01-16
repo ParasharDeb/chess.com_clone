@@ -1,10 +1,3 @@
-
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -13,9 +6,47 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
-
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+enum Color {
+  WHITE
+  BLACK
 }
+enum GameResult {
+  WHITE_WINS
+  BLACK_WINS
+  DRAW
+}
+
+model Player {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  rating    Int      @default(1200)
+  createdAt DateTime @default(now())
+
+  whiteGames Game[]  @relation("WhiteGames")
+  blackGames Game[]  @relation("BlackGames")
+  wins       Game[]  @relation("WinnerGames")
+}
+
+model Game {
+  id            String     @id @default(uuid())
+
+  whitePlayerId String
+  blackPlayerId String
+
+  whitePlayer   Player    @relation("WhiteGames", fields: [whitePlayerId], references: [id])
+  blackPlayer   Player    @relation("BlackGames", fields: [blackPlayerId], references: [id])
+
+  winnerId      String?
+  winner        Player?   @relation("WinnerGames", fields: [winnerId], references: [id])
+
+  result        GameResult
+  pgn           String     @db.Text
+
+  timeControl   String
+  endedAt       DateTime   @default(now())
+
+  @@index([whitePlayerId])
+  @@index([blackPlayerId])
+  @@index([winnerId])
+}
+
