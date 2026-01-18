@@ -1,3 +1,2 @@
-
-export { prisma } from './client.js';
-export * from './generated/prisma/client.js';
+export { db } from "./client"
+export * as schema from "./schema"

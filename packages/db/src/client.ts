@@ -1,22 +1,19 @@
+import { drizzle } from "drizzle-orm/node-postgres"
+import { Pool } from "pg"
+import * as schema from "./schema"
 
-import 'dotenv/config';
-import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from './generated/prisma/client.js';
-
-declare global {
-  // Allow global reuse in development to prevent exhausting DB connections across module reloads
-  // eslint-disable-next-line no-var
-  var __prisma__: PrismaClient | undefined;
+const globalForDrizzle = global as unknown as {
+  pool?: Pool
 }
 
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
-});
+export const pool =
+  globalForDrizzle.pool ??
+  new Pool({
+    connectionString: process.env.DATABASE_URL,
+  })
 
-const prismaInstance = global.__prisma__ ?? new PrismaClient({ adapter });
-
-if (process.env.NODE_ENV !== 'production') {
-  global.__prisma__ = prismaInstance;
+if (process.env.NODE_ENV !== "production") {
+  globalForDrizzle.pool = pool
 }
 
-export const prisma = prismaInstance;
+export const db = drizzle(pool, { schema })

@@ -2,11 +2,7 @@
   "extends": "@repo/typescript-config/base.json",
   "compilerOptions": {
     "outDir": "dist",
-    "rootDir": "src",
-    "incremental": true,
-    "composite": true,
-    "tsBuildInfoFile": "dist/.tsbuildinfo",
-    "module": "NodeNext"
+    "rootDir": "src"
   },
   "include": ["src"]
 }

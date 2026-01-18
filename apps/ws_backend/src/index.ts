@@ -1,6 +1,6 @@
 import { WebSocketServer } from "ws";
 import { GameManager } from "./gameManagers.js";
-import { prisma } from "@repo/db"
+
 const wss = new WebSocketServer({port:8080});
 const manager = new GameManager();
 
